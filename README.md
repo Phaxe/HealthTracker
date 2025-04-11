@@ -1,36 +1,135 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Habit Tracker Application
+
+A modern habit tracking application built with Next.js, Material-UI, and Redux Toolkit. This application helps users track their daily habits, view statistics, and maintain streaks.
+
+## Features
+
+- 🔐 Authentication with Auth0
+- 📊 Habit tracking with completion status
+- 📈 Statistics and streak tracking
+- 🎨 Dark/Light mode support
+- 📱 Fully responsive design
+- 🔍 Search functionality
+- 📊 Interactive charts for habit visualization
+
+## Project Structure
+
+```
+habit/
+├── app/
+│   ├── Redux/
+│   │   └── slices/
+│   │       ├── habitApiSlice.ts    # RTK Query API slice for habits
+│   │       └── store.ts            # Redux store configuration
+│   ├── statistics/
+│   │   └── page.tsx                # Statistics page with charts
+│   ├── layout.tsx                  # Root layout with Auth0 provider
+│   └── page.tsx                    # Main page with habit list
+├── components/
+│   ├── Charts/
+│   │   └── HabitChart.tsx         # Reusable chart component
+│   ├── HabitsCard/
+│   │   └── HabitsCard.tsx         # Habit card component
+│   ├── HabitModal/
+│   │   └── HabitModal.tsx         # Modal for adding/editing habits
+│   ├── MainLayout.tsx
+│   ├── SearchInput/
+│   │   └── SearchInput.tsx        # Search component
+│   ├── Sidebar/
+│   │   └── Sidebar.tsx            # Navigation sidebar
+│   ├── Theme/
+│   │   └── ThemeProvider.tsx      # Theme Folder provider
+        └── ThemeSwitcher.tsx 
+├── lib/
+│   └── types.ts                   # TypeScript type definitions
+├── public/                        # Static assets
+└── styles/                        # Global styles
+```
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js (v14 or later)
+- npm or yarn
+- Auth0 account (for authentication)
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd habit
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Create a `.env` file in the root directory with the following variables:
+```env
+AUTH0_SECRET='your-auth0-secret'
+AUTH0_BASE_URL='http://localhost:3000'
+AUTH0_ISSUER_BASE_URL='your-auth0-domain'
+AUTH0_CLIENT_ID='your-auth0-client-id'
+AUTH0_CLIENT_SECRET='your-auth0-client-secret'
+```
+
+4. Start the development server:
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Key Features Explained
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Authentication
+- Uses Auth0 for secure authentication
+- Protected routes ensure only authenticated users can access the app
+- User profile information displayed in the sidebar
 
-## Learn More
+### Habit Management
+- Create, edit, and delete habits
+- Track daily completion status
+- View completion history
+- Search and filter habits
 
-To learn more about Next.js, take a look at the following resources:
+### Statistics
+- Interactive charts showing habit completion over time
+- Streak tracking (current and longest streaks)
+- Responsive grid layout for charts
+- Dark/light mode support for better visibility
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Theme System
+- Material-UI based theming
+- Dark/light mode toggle
+- Consistent styling across components
+- Responsive design for all screen sizes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Technologies Used
 
-## Deploy on Vercel
+- **Frontend Framework**: Next.js
+- **UI Library**: Material-UI (MUI)
+- **State Management**: Redux Toolkit
+- **Charts**: Chart.js with react-chartjs-2
+- **Authentication**: Auth0
+- **Styling**: MUI's styled-components and Tailwind CSS
+- **Type Checking**: TypeScript
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

@@ -1,103 +1,109 @@
-import Image from "next/image";
+"use client";
+
+import { Box, Button, Typography } from '@mui/material';
+import { Add as AddIcon } from '@mui/icons-material';
+import { useGetHabitsQuery, useCreateHabitMutation } from './Redux/slices/habitApiSlice';
+import HabitsCard from '@/components/HabitsCard/HabitsCard';
+import { useState, useMemo } from 'react';
+import HabitModal from '@/components/HabitModal/HabitModal';
+import { Habit } from '@/lib/types';
+import MainLayout from '@/components/MainLayout';
+import SearchInput from '@/components/SearchInput/SearchInput';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const { data: habits = [], isLoading, isError } = useGetHabitsQuery();
+  const [createHabit] = useCreateHabitMutation();
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const handleAddHabit = async (habit: Partial<Habit>) => {
+    try {
+      await createHabit(habit).unwrap();
+    } catch (error) {
+      console.error('Failed to create habit:', error);
+    }
+  };
+
+  const filteredHabits = useMemo(() => {
+    if (!searchQuery) return habits;
+    
+    const query = searchQuery.toLowerCase();
+    return habits.filter(habit => 
+      habit.habit.toLowerCase().includes(query) || 
+      habit.description.toLowerCase().includes(query)
+    );
+  }, [habits, searchQuery]);
+
+  if (isLoading) {
+    return (
+      <MainLayout>
+        <Box sx={{ p: 3 }}>
+          <Typography>Loading habits...</Typography>
+        </Box>
+      </MainLayout>
+    );
+  }
+
+  if (isError) {
+    return (
+      <MainLayout>
+        <Box sx={{ p: 3 }}>
+          <Typography color="error">Error loading habits</Typography>
+        </Box>
+      </MainLayout>
+    );
+  }
+
+  return (
+    <MainLayout>
+      <Box>
+        <Box sx={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center',
+          mb: 4 
+        }}>
+          <Typography variant="h4" component="h1">
+            My Habits
+          </Typography>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => setIsAddModalOpen(true)}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            Add Habit
+          </Button>
+        </Box>
+
+        <Box sx={{ mb: 4 }}>
+          <SearchInput 
+            onSearch={setSearchQuery}
+            placeholder="Search by name or description..."
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        </Box>
+
+        <Box sx={{ 
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+            lg: 'repeat(4, 1fr)'
+          },
+          gap: 3
+        }}>
+          {filteredHabits.map((habit) => (
+            <HabitsCard key={habit.id} habit={habit} />
+          ))}
+        </Box>
+
+        <HabitModal
+          open={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onSubmit={handleAddHabit}
+          mode="add"
+        />
+      </Box>
+    </MainLayout>
   );
 }
