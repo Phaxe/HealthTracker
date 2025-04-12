@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
-import { Providers } from "./Redux/provider";
+import { StoreProviders } from "./Redux/provider";
 import ThemeProvider from "@/components/Theme/ThemeProvider";
 import { CssBaseline } from "@mui/material";
 
@@ -32,14 +32,14 @@ export default function RootLayout({
         {/* UserProvider: Manages authentication state and user-related data throughout the application */}
         <UserProvider>
           {/* Providers: A custom provider component (likely for Redux, Context, or other global states) */}
-          <Providers>
+          <StoreProviders>
             {/* ThemeProvider: MUI's theme provider to apply a consistent theme across the app */}
             <ThemeProvider>
               {/* CssBaseline: MUI component that normalizes CSS across different browsers for consistent styling */}
               <CssBaseline />
               {children}
             </ThemeProvider>
-          </Providers>
+          </StoreProviders>
         </UserProvider>
       </body>
     </html>

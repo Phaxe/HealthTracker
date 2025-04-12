@@ -11,10 +11,12 @@ interface ProtectedLayoutProps {
 }
 
 export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
+  // Use the useUser hook to get the current user data and loading state from Auth0
   const { user, isLoading } = useUser();
+  // Access the current theme for styling using MUI's useTheme hook
   const theme = useTheme();
 
-
+  // If the authentication status is still loading, display a loading screen
   if (isLoading) {
     return (
       <Box sx={{ 
@@ -28,11 +30,12 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
       </Box>
     );
   }
-
+ // If there is no user (i.e., the user is not logged in), display the login page
   if (!user) {
-    return <LoginPage />;
+    return <LoginPage />; // Redirects to the LoginPage component if the user is not logged in
   }
 
+   // If the user is authenticated, render the protected layout with Sidebar and content
   return (
     <Box sx={{ 
       display: 'flex', 

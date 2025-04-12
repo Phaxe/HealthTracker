@@ -1,4 +1,4 @@
-'use client'; // Essential for client-side interactivity in Next.js 13+
+'use client'; 
 
 // Import necessary MUI components for the card UI
 import { 
@@ -18,16 +18,19 @@ import {  Edit, Delete } from '@mui/icons-material';
 // Import Redux mutation hooks for habit management
 import { useDeleteHabitMutation, useUpdateHabitMutation } from '@/app/Redux/slices/habitApiSlice';
 import { useState, useEffect } from 'react';
-import HabitModal from '../HabitModal/HabitModal';
 import { Habit, HabitCardProps } from '@/lib/types';
 import { useMidnightRerender } from '@/lib/hooks';
+import dynamic from 'next/dynamic';
 
-// Define the props interface for the HabitsCard component
 
+const HabitModal = dynamic(() => import('../HabitModal/HabitModal'), { 
+  ssr: false 
+});
 
 export default function HabitsCard({ habit }: HabitCardProps) {
   const tick = useMidnightRerender(); // use it to keep things fresh at midnight
 
+  
   // State for managing the edit modal visibility
   const [isEditing, setIsEditing] = useState(false);
   // State for tracking today's completion status
@@ -37,17 +40,24 @@ export default function HabitsCard({ habit }: HabitCardProps) {
   const [updateHabit] = useUpdateHabitMutation();
   const [deleteHabit] = useDeleteHabitMutation();
 
-  // Helper function to get today's date in YYYY-MM-DD format
+  // Helper function to get today's date in YYYY-MM-DD format and to get local date 
   const getTodayDate = () => {
     const today = new Date();
-    return today.toISOString().split('T')[0];
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`; 
   };
 
-  // Effect to find and set today's completion status whenever habit.completion changes
   useEffect(() => {
     const today = getTodayDate();
-    // Check if today's date exists in the completion array
-    const todayExists = habit.completion.some(c => c.date === today);
+  
+    // Normalize all habit completion dates just to be safe
+    const todayExists = habit.completion.some(c => {
+      const entryDate = c.date?.split('T')[0]; // Ensure we're only comparing the date part
+      return entryDate === today;
+    });
+  
     setIsCompletedToday(todayExists);
   }, [habit.completion,tick]);
 
@@ -96,7 +106,7 @@ export default function HabitsCard({ habit }: HabitCardProps) {
   const handleDelete = async () => {
     try {
       // Convert string ID to number as required by the API
-      await deleteHabit(Number(habit.id)).unwrap();
+      await deleteHabit((habit.id)).unwrap();
     } catch (error) {
       console.error('Failed to delete habit:', error);
     }

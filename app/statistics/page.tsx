@@ -7,8 +7,9 @@ import { Box, Typography } from '@mui/material';
 import { useGetHabitsQuery } from '../Redux/slices/habitApiSlice';
 
 // Import custom components
-import HabitChart from '@/components/Charts/HabitChart';
+import HabitChart from '@/components/HabitsComponents/HabitsCharts/HabitChart';
 import ProtectedLayout from '@/components/ProtectedLayout';
+
 
 export default function StatisticsPage() {
   // Fetch habits data using RTK Query

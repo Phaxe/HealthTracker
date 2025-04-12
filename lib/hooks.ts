@@ -3,25 +3,23 @@ import { useEffect, useState } from 'react';
 
 
 // I created this hook to refresh the habits at midnight so it be easier to track the daily habits
+
 export function useMidnightRerender() {
   const [tick, setTick] = useState(0);
+  const [currentDate, setCurrentDate] = useState(() => new Date().toDateString());
 
   useEffect(() => {
-    const now = new Date();
-    const nextMidnight = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      now.getDate() + 1,
-      0, 0, 0, 0
-    );
-    const msUntilMidnight = nextMidnight.getTime() - now.getTime();
+    const interval = setInterval(() => {
+      const now = new Date().toDateString();
+      if (now !== currentDate) {
+        setCurrentDate(now);
+        setTick((prev) => prev + 1);
+      }
+    }, 6000); // check every 60 seconds
 
-    const timeout = setTimeout(() => {
-      setTick(prev => prev + 1);
-    }, msUntilMidnight);
+    return () => clearInterval(interval);
+  }, [currentDate]);
 
-    return () => clearTimeout(timeout);
-  }, [tick]);
-
-  return tick; // just use it to force re-render
+  return tick;  // just use it to force re-render
 }
+

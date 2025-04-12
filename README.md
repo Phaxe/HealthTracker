@@ -1,49 +1,67 @@
-# Habit Tracker Application
+Habit Tracker Application
 
 A modern habit tracking application built with Next.js, Material-UI, and Redux Toolkit. This application helps users track their daily habits, view statistics, and maintain streaks.
 
-## Features
+Notes
 
-- 🔐 Authentication with Auth0
-- 📊 Habit tracking with completion status
-- 📈 Statistics and streak tracking
-- 🎨 Dark/Light mode support
-- 📱 Fully responsive design
-- 🔍 Search functionality
-- 📊 Interactive charts for habit visualization
+-Initially, I used ShadCN for styling and UI components, but as per the recommendation to use MUI, I removed ShadCN and continued with MUI only.
 
-## Project Structure
+-My original idea was to toggle each HabitCard as complete/incomplete. However, with the streak system, I decided to hide completed habits and show only pending ones. The toggle logic still exists, but the user interface currently only allows marking as complete (not undoing).
 
-```
+-All habit-related UI and logic can be found in the HabitComponents folder inside the components directory.
+
+-I also created a custom hook to reset daily habits at midnight (12 AM), but I haven't tested it yet.
+
+Features
+
+🔐 Authentication with Auth0
+
+📊 Habit tracking with completion status
+
+📈 Statistics and streak tracking
+
+🎨 Dark/Light mode support
+
+📱 Fully responsive design
+
+🔍 Search functionality
+
+📊 Interactive charts for habit visualization
+
 habit/
 ├── app/
-│   ├── Redux/
-│   │   └── slices/
-│   │       ├── habitApiSlice.ts    # RTK Query API slice for habits
-│   │       └── store.ts            # Redux store configuration
+│   ├── api/
+│   │   └── auth/[auth0]/route.ts       # Auth0 route handler
+│   ├── redux/
+│   │   ├── slices/
+│   │   │   └── habitSlice.ts          # Redux habit slice
+│   │   ├── store.ts                   # Redux store setup
+│   │   └── provider.tsx               # Redux provider component
 │   ├── statistics/
-│   │   └── page.tsx                # Statistics page with charts
-│   ├── layout.tsx                  # Root layout with Auth0 provider
-│   └── page.tsx                    # Main page with habit list
+│   │   └── page.tsx                   # Statistics page with charts
+│   ├── layout.tsx                    # Root layout with Auth0 provider
+│   ├── page.tsx                      # Main landing/dashboard page
+│   ├── global.css                    # Global styles
+│   ├── lib/
+│   │   ├── hook.ts                   # Custom hooks
+│   │   ├── types.ts                  # TypeScript types
+│   │   └── utils.ts                  # Utility functions
 ├── components/
-│   ├── Charts/
-│   │   └── HabitChart.tsx         # Reusable chart component
-│   ├── HabitsCard/
-│   │   └── HabitsCard.tsx         # Habit card component
-│   ├── HabitModal/
-│   │   └── HabitModal.tsx         # Modal for adding/editing habits
-│   ├── MainLayout.tsx
+│   ├── HabitComponents/
+│   │   ├── HabitsCard.tsx            # Habit card component
+│   │   ├── HabitModal.tsx            # Modal for adding/editing habits
+│   │   └── HabitsCharts.tsx          # Habit charts component
 │   ├── SearchInput/
-│   │   └── SearchInput.tsx        # Search component
+│   │   └── SearchInput.tsx           # Search input component
 │   ├── Sidebar/
-│   │   └── Sidebar.tsx            # Navigation sidebar
+│   │   └── Sidebar.tsx                 # App sidebar navigation
+│   ├── ProtectedLayout.tsx           # Layout wrapper for protected routes  
+│   ├── loginPage.tsx                 # Login page UI          
 │   ├── Theme/
-│   │   └── ThemeProvider.tsx      # Theme Folder provider
-        └── ThemeSwitcher.tsx 
-├── lib/
-│   └── types.ts                   # TypeScript type definitions
-├── public/                        # Static assets
-└── styles/                        # Global styles
+│   │   ├── ThemeProvider.tsx         # MUI theme provider
+│   │   └── ThemeSwitcher.tsx         # Dark/light mode toggle
+├── public/                           # Static assets
+      
 ```
 
 ## Getting Started
