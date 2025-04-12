@@ -12,6 +12,8 @@ Notes
 
 -I also created a custom hook to reset daily habits at midnight (12 AM), but I haven't tested it yet.
 
+-I integrated a sidebar component from a previous side project to handle navigation, theme switching, and user authentication (login/logout). It also displays the user's name and profile image.
+
 Features
 
 🔐 Authentication with Auth0
