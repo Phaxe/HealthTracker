@@ -10,15 +10,9 @@ import {
   Box
 } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { Habit } from '@/lib/types';
+import {  HabitModalProps } from '@/lib/types';
 
-interface HabitModalProps {
-  open: boolean;
-  onClose: () => void;
-  onSubmit: (habit: Partial<Habit>) => void;
-  mode: 'add' | 'edit';
-  initialData?: Habit;
-}
+
 
 export default function HabitModal({ 
   open, 

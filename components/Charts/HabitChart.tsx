@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { Box, Typography, Paper, useTheme, useMediaQuery } from '@mui/material';
-import { Habit } from '@/lib/types';
+import {  HabitChartProps } from '@/lib/types';
 
 ChartJS.register(
   CategoryScale,
@@ -25,10 +25,7 @@ ChartJS.register(
   Legend
 );
 
-interface HabitChartProps {
-  habit: Habit;
-  title?: string;
-}
+
 
 export default function HabitChart({ habit, title }: HabitChartProps) {
   const theme = useTheme();

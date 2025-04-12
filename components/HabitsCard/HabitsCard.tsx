@@ -6,27 +6,28 @@ import {
   CardContent, 
   Typography, 
   Box,
-  Checkbox,
   IconButton,
   CardActions,
-  Chip
+  Chip,
+  Button
 } from '@mui/material';
 
 // Import icons for the UI elements
-import { CheckCircle, Circle, Edit, Delete } from '@mui/icons-material';
+import {  Edit, Delete } from '@mui/icons-material';
 
 // Import Redux mutation hooks for habit management
 import { useDeleteHabitMutation, useUpdateHabitMutation } from '@/app/Redux/slices/habitApiSlice';
 import { useState, useEffect } from 'react';
 import HabitModal from '../HabitModal/HabitModal';
-import { Habit } from '@/lib/types';
+import { Habit, HabitCardProps } from '@/lib/types';
+import { useMidnightRerender } from '@/lib/hooks';
 
 // Define the props interface for the HabitsCard component
-interface HabitCardProps {
-  habit: Habit;
-}
+
 
 export default function HabitsCard({ habit }: HabitCardProps) {
+  const tick = useMidnightRerender(); // use it to keep things fresh at midnight
+
   // State for managing the edit modal visibility
   const [isEditing, setIsEditing] = useState(false);
   // State for tracking today's completion status
@@ -48,7 +49,7 @@ export default function HabitsCard({ habit }: HabitCardProps) {
     // Check if today's date exists in the completion array
     const todayExists = habit.completion.some(c => c.date === today);
     setIsCompletedToday(todayExists);
-  }, [habit.completion]);
+  }, [habit.completion,tick]);
 
   // Handler for toggling habit completion status
   const handleToggleComplete = async () => {
@@ -125,12 +126,7 @@ export default function HabitsCard({ habit }: HabitCardProps) {
           <Typography variant="h6" component="div">
             {habit.habit}
           </Typography>
-          <Checkbox
-            checked={isCompletedToday}
-            onChange={handleToggleComplete}
-            icon={<Circle />}
-            checkedIcon={<CheckCircle />}
-          />
+
         </Box>
         {/* Habit description */}
         <Typography variant="body2" color="text.secondary">
@@ -146,13 +142,22 @@ export default function HabitsCard({ habit }: HabitCardProps) {
         </Box>
       </CardContent>
       {/* Action buttons for edit and delete */}
-      <CardActions>
+      <CardActions className='flex items-center justify-between '>
         <IconButton onClick={() => setIsEditing(true)} size="small">
           <Edit color="primary" />
         </IconButton>
         <IconButton onClick={handleDelete} size="small">
           <Delete color="error" />
         </IconButton>
+        <Button
+        variant="contained"
+        
+        onClick={handleToggleComplete}
+        size="small"
+        className='bg-blue-500 items-end self-end'
+      >
+        {isCompletedToday ? "Completed" : "Complete"}
+      </Button>
       </CardActions>
       {/* Edit modal - shown when isEditing is true */}
       <HabitModal

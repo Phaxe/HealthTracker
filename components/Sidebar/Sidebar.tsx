@@ -14,7 +14,7 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const { user } = useUser();
   const theme = useTheme();
-  const userImage = user?.picture;
+
 
   // I  used window.location for Auth0 navigation to avoid CORS issues that happened in my dev tool
   const handleAuthNavigation = (e: React.MouseEvent, path: string) => {
@@ -55,11 +55,11 @@ export default function Sidebar() {
         {user && (
           <div className="mt-16 mb-4 p-2">
             <div className="flex items-center space-x-2">
-              {userImage && (
+              {user.picture && (
                 <Image
                   width={100}
                   height={8}
-                  src={userImage}
+                  src={user.picture}
                   alt={user.name || 'User avatar'}
                   className="w-8 h-8 rounded-full object-cover"
                 />

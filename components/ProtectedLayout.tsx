@@ -6,11 +6,11 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import LoginPage from './LoginPage';
 
 
-interface MainLayoutProps {
+interface ProtectedLayoutProps {
   children: React.ReactNode;
 }
 
-export default function MainLayout({ children }: MainLayoutProps) {
+export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   const { user, isLoading } = useUser();
   const theme = useTheme();
 

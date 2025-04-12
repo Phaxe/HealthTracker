@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { UserProvider } from '@auth0/nextjs-auth0/client';
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 import { Providers } from "./Redux/provider";
 import ThemeProvider from "@/components/Theme/ThemeProvider";
-import { CssBaseline } from '@mui/material';
+import { CssBaseline } from "@mui/material";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,9 +29,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        {/* UserProvider: Manages authentication state and user-related data throughout the application */}
         <UserProvider>
+          {/* Providers: A custom provider component (likely for Redux, Context, or other global states) */}
           <Providers>
+            {/* ThemeProvider: MUI's theme provider to apply a consistent theme across the app */}
             <ThemeProvider>
+              {/* CssBaseline: MUI component that normalizes CSS across different browsers for consistent styling */}
               <CssBaseline />
               {children}
             </ThemeProvider>

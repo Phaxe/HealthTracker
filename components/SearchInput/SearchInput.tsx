@@ -1,3 +1,4 @@
+'use client';
 /**
  * SearchInput Component
  * 
@@ -9,7 +10,7 @@
  * - Customizable placeholder text
  */
 
-'use client';
+
 
 import { TextField, InputAdornment } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';

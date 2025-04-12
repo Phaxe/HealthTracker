@@ -8,7 +8,7 @@ import { useGetHabitsQuery } from '../Redux/slices/habitApiSlice';
 
 // Import custom components
 import HabitChart from '@/components/Charts/HabitChart';
-import MainLayout from '@/components/MainLayout';
+import ProtectedLayout from '@/components/ProtectedLayout';
 
 export default function StatisticsPage() {
   // Fetch habits data using RTK Query
@@ -17,27 +17,27 @@ export default function StatisticsPage() {
   // Loading state - shows a loading message while data is being fetched
   if (isLoading) {
     return (
-      <MainLayout>
+      <ProtectedLayout>
         <Box p={3}>
           <Typography>Loading statistics...</Typography>
         </Box>
-      </MainLayout>
+      </ProtectedLayout>
     );
   }
 
   // Error state - shows an error message if data fetching fails
   if (error) {
     return (
-      <MainLayout>
+      <ProtectedLayout>
         <Box p={3}>
           <Typography color="error">Error loading statistics</Typography>
         </Box>
-      </MainLayout>
+      </ProtectedLayout>
     );
   }
 
   return (
-    <MainLayout>
+    <ProtectedLayout>
       <Box p={3}>
         {/* Page title */}
         <Typography variant="h4" gutterBottom>
@@ -66,6 +66,6 @@ export default function StatisticsPage() {
           ))}
         </Box>
       </Box>
-    </MainLayout>
+    </ProtectedLayout>
   );
 } 
